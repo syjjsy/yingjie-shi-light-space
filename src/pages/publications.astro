@@ -23,7 +23,7 @@ function isYingjie(name: string) {
         <option value="conference">Conference / 会议</option>
         <option value="preprint">Preprint / 预印本</option>
       </select>
-      <span class="result-summary"><strong data-result-count>{publications.length}</strong> <span data-en>publications</span><span data-zh>篇论文</span></span>
+      <span class="result-summary" aria-live="polite"><strong data-result-count>{publications.length}</strong> <span data-en>publications</span><span data-zh>篇论文</span></span>
     </form>
   </div>
   <section class="publication-list shell" aria-label="Publication list">
@@ -37,6 +37,16 @@ function isYingjie(name: string) {
               <><span>{isYingjie(author) ? <strong>{author}</strong> : author}</span>{index < item.authors.length - 1 ? ", " : ""}</>
             ))}
           </p>
+          {(item.coFirstAuthor || item.correspondingAuthor) && (
+            <p class="publication-contributions" aria-label="Yingjie Shi author roles">
+              {item.coFirstAuthor && (
+                <span data-author-role="co-first"><span data-en>Co-first author</span><span data-zh>共同第一作者</span></span>
+              )}
+              {item.correspondingAuthor && (
+                <span data-author-role="corresponding"><span data-en>Corresponding author</span><span data-zh>通讯作者</span></span>
+              )}
+            </p>
+          )}
           <p class="publication-venue"><em>{item.venue}</em>{item.volume ? ` ${item.volume}` : ""}{item.issue ? `(${item.issue})` : ""}{item.pages ? `, ${item.pages}` : ""}.</p>
         </div>
         <div class="publication-meta">

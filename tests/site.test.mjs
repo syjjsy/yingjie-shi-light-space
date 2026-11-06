@@ -34,6 +34,12 @@ test("publication archive is complete and interactive", async () => {
   assert.match(html, /data-publication-filters/);
   assert.match(html, /data-copy-bibtex/);
   assert.equal((html.match(/data-publication(?=[\s>])/g) || []).length, 29, "every publication should appear on the archive page");
+  assert.equal((html.match(/data-author-role="co-first"/g) || []).length, 5, "co-first author records should be labeled");
+  assert.equal((html.match(/data-author-role="corresponding"/g) || []).length, 4, "corresponding author records should be labeled");
+  assert.match(html, /共同第一作者/);
+  assert.match(html, /通讯作者/);
+  const styles = await readFile(new URL("../src/styles/global.css", import.meta.url), "utf8");
+  assert.match(styles, /\.publication-item\[hidden\]\s*\{[^}]*display:\s*none\s*!important;/s, "filtered publications should be visually hidden");
   assert.doesNotMatch(html, /href="[^"]*\/publications\/[^"#?]+\//, "publications must not generate individual detail pages");
   assert.doesNotMatch(html, /candidate-only|Lorem ipsum/i);
 });

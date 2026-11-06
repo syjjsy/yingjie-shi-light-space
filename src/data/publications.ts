@@ -12,6 +12,8 @@ export type Publication = {
   pages?: string;
   source: string;
   featured?: boolean;
+  coFirstAuthor?: boolean;
+  correspondingAuthor?: boolean;
 };
 
 export const publications: Publication[] = [
@@ -49,7 +51,8 @@ export const publications: Publication[] = [
     doi: "10.1016/j.optlaseng.2026.109919",
     volume: "205",
     pages: "109919",
-    source: "Crossref exact-title match",
+    source: "Crossref exact-title match; Elsevier author footnote",
+    coFirstAuthor: true,
   },
   {
     year: 2026,
@@ -61,7 +64,8 @@ export const publications: Publication[] = [
     volume: "14",
     issue: "7",
     pages: "3005–3018",
-    source: "Crossref exact-title match; Optica issue page",
+    source: "Crossref exact-title match; Optica issue page; supplied CV corresponding-author marker",
+    correspondingAuthor: true,
   },
   {
     year: 2026,
@@ -72,7 +76,8 @@ export const publications: Publication[] = [
     doi: "10.1016/j.optlaseng.2026.109602",
     volume: "200",
     pages: "109602",
-    source: "Crossref exact-title match",
+    source: "Crossref exact-title match; supplied CV corresponding-author marker",
+    correspondingAuthor: true,
   },
   {
     year: 2026,
@@ -84,7 +89,8 @@ export const publications: Publication[] = [
     volume: "14",
     issue: "5",
     pages: "1959–1972",
-    source: "Crossref exact-title match; Optica issue page",
+    source: "Crossref exact-title match; Optica issue page; Optica publisher PDF author note",
+    coFirstAuthor: true,
   },
   {
     year: 2026,
@@ -107,7 +113,8 @@ export const publications: Publication[] = [
     volume: "5",
     issue: "2",
     pages: "026001",
-    source: "Crossref exact-title match",
+    source: "Crossref exact-title match; supplied CV corresponding-author marker",
+    correspondingAuthor: true,
   },
   {
     year: 2025,
@@ -151,7 +158,8 @@ export const publications: Publication[] = [
     doi: "10.1016/j.optlaseng.2025.109183",
     volume: "194",
     pages: "109183",
-    source: "Crossref exact-title match",
+    source: "Crossref exact-title match; Elsevier author footnote",
+    coFirstAuthor: true,
   },
   {
     year: 2025,
@@ -163,7 +171,8 @@ export const publications: Publication[] = [
     volume: "33",
     issue: "21",
     pages: "44522–44542",
-    source: "Crossref exact-title match",
+    source: "Crossref exact-title match; supplied CV corresponding-author marker",
+    correspondingAuthor: true,
   },
   {
     year: 2025,
@@ -220,7 +229,8 @@ export const publications: Publication[] = [
     venue: "arXiv:2311.03062",
     type: "preprint",
     doi: "10.48550/arXiv.2311.03062",
-    source: "arXiv record; DBLP metadata",
+    source: "arXiv record and PDF author note; DBLP metadata",
+    coFirstAuthor: true,
   },
   {
     year: 2023,
@@ -261,7 +271,8 @@ export const publications: Publication[] = [
     volume: "9",
     issue: "7",
     pages: "467",
-    source: "Crossref exact-title match; publisher PDF",
+    source: "Crossref exact-title match; publisher page and PDF author note",
+    coFirstAuthor: true,
   },
   {
     year: 2022,

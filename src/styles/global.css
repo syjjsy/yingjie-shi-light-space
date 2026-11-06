@@ -271,10 +271,13 @@ html[data-language="zh"] [data-zh] { display: revert; }
 .result-summary { margin-left: auto; color: var(--muted); font-size: .75rem; }
 .publication-list { padding: 40px 0 150px; }
 .publication-item { display: grid; grid-template-columns: 95px minmax(0, 1fr) 190px; gap: 30px; padding: 42px 0; border-bottom: 1px solid var(--line); }
+.publication-item[hidden] { display: none !important; }
 .publication-year { color: var(--red); font: .72rem var(--mono); }
 .publication-main h2 { max-width: 1040px; margin: 0 0 17px; font-family: var(--serif); font-size: clamp(1.35rem, 2.2vw, 2.45rem); font-weight: 400; line-height: 1.15; letter-spacing: -.025em; }
 .publication-authors { margin: 0 0 10px; color: var(--muted); font-size: .8rem; line-height: 1.55; }
 .publication-authors strong { color: var(--ink); font-weight: 650; }
+.publication-contributions { display: flex; flex-wrap: wrap; gap: 7px; margin: 0 0 12px; }
+.publication-contributions > span { padding: 4px 7px; border: 1px solid color-mix(in srgb, var(--red) 55%, var(--line)); color: var(--red); font: .58rem var(--mono); letter-spacing: .04em; }
 .publication-venue { margin: 0; font-size: .76rem; }
 .publication-meta { display: flex; flex-direction: column; gap: 11px; align-items: flex-start; }
 .publication-type { padding: 5px 8px; border: 1px solid var(--line); font: .6rem var(--mono); letter-spacing: .08em; text-transform: uppercase; }
