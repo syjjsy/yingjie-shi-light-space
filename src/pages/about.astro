@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageIntro from "../components/PageIntro.astro";
 import { profile } from "../data/profile";
+import { withMediaBase } from "../utils/paths";
 ---
 
 <BaseLayout title="About — Yingjie Shi" description="About Yingjie Shi, a postdoctoral researcher at Nanjing University of Science and Technology working in computational imaging.">
@@ -17,7 +18,13 @@ import { profile } from "../data/profile";
         <p><span data-en>Photography is another way I observe light, space, and the shifting details of everyday life.</span><span data-zh>摄影是我观察光线、空间与日常变化的另一种方式。</span></p>
       </div>
     </div>
-    <aside class="reveal">
+    <aside class="about-aside reveal">
+      <figure class="profile-portrait">
+        <div class="profile-portrait-frame">
+          <img src={withMediaBase(profile.portrait)} width="335" height="335" alt="Portrait of Yingjie Shi" />
+        </div>
+        <figcaption><span>Yingjie Shi</span><span>Nanjing · 2026</span></figcaption>
+      </figure>
       <dl class="fact-list">
         <div><dt>Name</dt><dd>{profile.name} / {profile.nameZh}</dd></div>
         <div><dt>Current role</dt><dd><span data-en>{profile.role}</span><span data-zh>{profile.roleZh}</span></dd></div>
@@ -26,5 +33,25 @@ import { profile } from "../data/profile";
         <div><dt>Academic profile</dt><dd><a class="text-link" href={profile.scholar} rel="me noreferrer">Google Scholar</a></dd></div>
       </dl>
     </aside>
+  </section>
+
+  <section class="education-section shell" aria-labelledby="education-title">
+    <header class="education-heading reveal">
+      <span class="education-index">01 — 04</span>
+      <h2 id="education-title"><span data-en>Education</span><span data-zh>教育经历</span></h2>
+      <p><span data-en>Training across physics, optical engineering, and electronic science.</span><span data-zh>从物理学、光学工程到电子科学与技术的研究训练。</span></p>
+    </header>
+    <ol class="education-list">
+      {profile.education.map((entry, index) => (
+        <li class="education-record reveal" data-education-entry>
+          <span class="education-number">{String(index + 1).padStart(2, "0")}</span>
+          <p class="education-period"><span data-en>{entry.period}</span><span data-zh>{entry.periodZh}</span></p>
+          <div class="education-main">
+            <h3><span data-en>{entry.institution}</span><span data-zh>{entry.institutionZh}</span></h3>
+            <p><span data-en>{entry.degree} · {entry.field}</span><span data-zh>{entry.degreeZh} · {entry.fieldZh}</span></p>
+          </div>
+        </li>
+      ))}
+    </ol>
   </section>
 </BaseLayout>

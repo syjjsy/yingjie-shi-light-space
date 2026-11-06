@@ -4,7 +4,7 @@ import OpticalField from "../components/OpticalField.astro";
 import { profile } from "../data/profile";
 import { researchStories } from "../data/research";
 import { photos } from "../data/photos";
-import { withBase } from "../utils/paths";
+import { withBase, withMediaBase } from "../utils/paths";
 
 const previewItems = ["City", "Nature", "Humanities"]
   .map((series) => photos.find((photo) => photo.series === series))
@@ -79,7 +79,7 @@ const previewItems = ["City", "Nature", "Humanities"]
       </div>
       <div class="photo-preview reveal" aria-label="Selected photographs">
         {previewItems.map((item) => (
-          <figure class="photo-study"><img src={withBase(item.src)} width={item.width} height={item.height} alt={item.alt} loading="lazy" /><figcaption><span>{item.label}</span><span>{item.badge}</span></figcaption></figure>
+          <figure class="photo-study"><img src={withMediaBase(item.src)} width={item.width} height={item.height} alt={item.alt} loading="lazy" /><figcaption><span>{item.label}</span><span>{item.badge}</span></figcaption></figure>
         ))}
       </div>
       <p style="margin-top:38px"><a class="text-link" href={withBase("/photography/")}><span data-en>Open the photography archive</span><span data-zh>查看个人摄影集</span></a></p>

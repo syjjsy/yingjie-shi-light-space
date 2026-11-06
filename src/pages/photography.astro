@@ -2,7 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageIntro from "../components/PageIntro.astro";
 import { photos } from "../data/photos";
-import { withBase } from "../utils/paths";
+import { withMediaBase } from "../utils/paths";
 
 const categoryDefinitions = [
   { key: "City", title: "City", titleZh: "城市" },
@@ -36,7 +36,7 @@ const globalIndex = new Map(photos.map((photo, index) => [photo.source, index]))
               <figure
                 class="gallery-demo-card reveal"
                 data-gallery-item
-                data-full={withBase(full)}
+                data-full={withMediaBase(full)}
                 data-alt={photo.alt}
                 data-title={title}
                 role="button"
@@ -45,8 +45,8 @@ const globalIndex = new Map(photos.map((photo, index) => [photo.source, index]))
               >
                 <div class="gallery-image-frame">
                   <img
-                    src={withBase(preview)}
-                    srcset={photo.variants.map((variant) => `${withBase(variant.src)} ${variant.width}w`).join(", ")}
+                    src={withMediaBase(preview)}
+                    srcset={photo.variants.map((variant) => `${withMediaBase(variant.src)} ${variant.width}w`).join(", ")}
                     sizes="(max-width: 620px) 100vw, (max-width: 980px) 50vw, 33vw"
                     width={photo.width}
                     height={photo.height}

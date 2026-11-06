@@ -36,9 +36,33 @@ test("enlarged identity typography is scoped to the home page", async () => {
   assert.match(styles, /\.site-nav a, \.language-toggle \{[^}]*font-size: \.74rem;/s);
   assert.match(styles, /\.hero-cn \{[^}]*font-size: \.84rem;/s);
   assert.match(styles, /\.hero-meta \{[^}]*font-size: \.75rem;/s);
-  assert.match(styles, /\.home-page \.hero-cn \{ font-size: 1\.1rem; \}/);
-  assert.match(styles, /\.home-page \.hero-meta \{ font-size: 1rem; \}/);
-  assert.match(styles, /@media \(min-width: 981px\) \{\s*\.home-page \.site-nav a \{ font-size: 1rem; \}/s);
+  assert.match(styles, /\.home-page \.hero-cn \{ font-size: 1\.25rem; \}/);
+  assert.match(styles, /\.home-page \.hero-meta \{ font-size: 1\.125rem; \}/);
+  assert.match(styles, /@media \(min-width: 981px\) \{\s*\.home-page \.site-nav a \{ font-size: 1\.125rem; \}/s);
+});
+
+test("about page contains the portrait and complete education history", async () => {
+  const html = await readFile(new URL("about/index.html", distUrl), "utf8");
+  const portrait = fileURLToPath(new URL("../public/profile/yingjie-shi-portrait.webp", import.meta.url));
+  const metadata = await sharp(portrait).metadata();
+  assert.equal(metadata.width, 335);
+  assert.equal(metadata.height, 335);
+  assert.match(html, /profile\/yingjie-shi-portrait\.webp/);
+  assert.equal((html.match(/data-education-entry(?=[\s>])/g) || []).length, 4);
+  assert.match(html, /南京理工大学/);
+  assert.match(html, /巴黎西岱大学/);
+  assert.match(html, /湘潭大学/);
+  assert.match(html, /国家公派联合培养博士研究生/);
+  assert.doesNotMatch(html, /18873291855|syj@njust\.edu\.cn/i, "private resume contact details must not be published");
+});
+
+test("media URLs can be hosted separately for text-only deployment targets", async () => {
+  const paths = await readFile(new URL("../src/utils/paths.ts", import.meta.url), "utf8");
+  const about = await readFile(new URL("../src/pages/about.astro", import.meta.url), "utf8");
+  const photography = await readFile(new URL("../src/pages/photography.astro", import.meta.url), "utf8");
+  assert.match(paths, /PUBLIC_MEDIA_BASE_URL/);
+  assert.match(about, /withMediaBase\(profile\.portrait\)/);
+  assert.match(photography, /withMediaBase\(variant\.src\)/);
 });
 
 test("publication archive is complete and interactive", async () => {
