@@ -44,6 +44,18 @@ test("publication archive is complete and interactive", async () => {
   assert.doesNotMatch(html, /candidate-only|Lorem ipsum/i);
 });
 
+test("research archive contains every resume project and patent", async () => {
+  const html = await readFile(new URL("research/index.html", distUrl), "utf8");
+  assert.equal((html.match(/data-research-project(?=[\s>])/g) || []).length, 4);
+  assert.equal((html.match(/data-patent(?=[\s>])/g) || []).length, 9);
+  assert.match(html, /2022-JCJQZD-XXX-2025-XXX/);
+  assert.match(html, /62031018/);
+  assert.match(html, /202511342900\.9/);
+  assert.match(html, /202211659814\.7/);
+  assert.match(html, /师瑛杰/);
+  assert.doesNotMatch(html, /18873291855|syj@njust\.edu\.cn/i, "private resume contact details must not be published");
+});
+
 test("blog and editorial placeholder notes are absent", async () => {
   const all = await files(dist);
   const html = (await Promise.all(all.filter((file) => file.endsWith(".html")).map((file) => readFile(file, "utf8")))).join("\n");

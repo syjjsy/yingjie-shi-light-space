@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageIntro from "../../components/PageIntro.astro";
-import { researchAreas, researchStories } from "../../data/research";
+import { patents, researchAreas, researchProjects, researchStories } from "../../data/research";
 import { withBase } from "../../utils/paths";
 ---
 
@@ -30,6 +30,56 @@ import { withBase } from "../../utils/paths";
           <div class="story-side">
             <p><span data-en>{story.description}</span><span data-zh>{story.descriptionZh}</span></p>
             <a class="text-link" href={withBase(`/research/${story.slug}/`)}><span data-en>Read the research note</span><span data-zh>阅读研究说明</span></a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+  <section class="research-records shell" aria-labelledby="projects-heading">
+    <header class="records-heading reveal">
+      <span class="records-label">04 / PROJECTS</span>
+      <h2 id="projects-heading"><span data-en>Funded projects</span><span data-zh>科研项目</span></h2>
+      <span class="records-count">04</span>
+    </header>
+    <div class="project-list">
+      {researchProjects.map((project) => (
+        <article class="project-record reveal" data-research-project>
+          <span class="record-index">{project.index}</span>
+          <div class="record-main">
+            <h3><span data-en>{project.title}</span><span data-zh>{project.titleZh}</span></h3>
+            <p class="project-code"><span data-en>Project no.</span><span data-zh>项目编号</span> · {project.code}</p>
+          </div>
+          <dl class="project-facts">
+            <div><dt><span data-en>Period</span><span data-zh>周期</span></dt><dd>{project.period}</dd></div>
+            <div><dt><span data-en>Funding</span><span data-zh>经费</span></dt><dd><span data-en>{project.funding}</span><span data-zh>{project.fundingZh}</span></dd></div>
+            <div><dt><span data-en>Role</span><span data-zh>角色</span></dt><dd><span data-en>{project.role}</span><span data-zh>{project.roleZh}</span></dd></div>
+            <div><dt><span data-en>Status</span><span data-zh>状态</span></dt><dd><span data-en>{project.status}</span><span data-zh>{project.statusZh}</span></dd></div>
+          </dl>
+        </article>
+      ))}
+    </div>
+  </section>
+  <section class="research-records patent-records shell" aria-labelledby="patents-heading">
+    <header class="records-heading reveal">
+      <span class="records-label">05 / PATENTS</span>
+      <h2 id="patents-heading"><span data-en>Patent applications</span><span data-zh>专利申请</span></h2>
+      <span class="records-count">09</span>
+    </header>
+    <div class="patent-list">
+      {patents.map((patent) => (
+        <article class="patent-record reveal" data-patent>
+          <span class="record-index">{patent.index}</span>
+          <div class="record-main">
+            <h3><span data-en>{patent.title}</span><span data-zh>{patent.titleZh}</span></h3>
+            <p class="patent-inventors">
+              {patent.inventors.map((inventor, index) => (
+                <><span class:list={{ "current-inventor": inventor === "师瑛杰" }}>{inventor}</span>{index < patent.inventors.length - 1 ? "、" : ""}</>
+              ))}
+            </p>
+          </div>
+          <div class="patent-application">
+            <span><span data-en>Application</span><span data-zh>申请号</span></span>
+            <strong>{patent.application}</strong>
           </div>
         </article>
       ))}

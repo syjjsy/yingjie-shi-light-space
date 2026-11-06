@@ -1,5 +1,13 @@
 # Content guide
 
+## Update a research project or patent
+
+1. Edit the corresponding object in `src/data/research.ts`; projects and patents are rendered together on the research archive page and do not have separate detail pages.
+2. Preserve masked project names and numbers exactly as supplied. Do not infer or expand confidential fields.
+3. Patent records use the application number stated in the source CV. Do not describe an application as granted unless that status has been independently confirmed.
+4. Keep the source CV outside Git because its filename and document contents include private contact details.
+5. Run `npm run check` and `npm test`, then inspect both language modes on the research page.
+
 ## Add a publication
 
 1. Confirm that the work belongs to this Yingjie Shi.
