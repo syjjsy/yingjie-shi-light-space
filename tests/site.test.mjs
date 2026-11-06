@@ -51,8 +51,23 @@ test("blog and editorial placeholder notes are absent", async () => {
 test("photography archive contains every imported photograph", async () => {
   const all = await files(dist);
   const html = await readFile(new URL("photography/index.html", distUrl), "utf8");
-  assert.equal((html.match(/data-gallery-item(?=[\s>])/g) || []).length, 83);
-  assert.equal(all.filter((file) => file.endsWith(".webp") && path.relative(dist, file).startsWith("photos/")).length, 246);
+  const script = await readFile(new URL("../public/site.js", import.meta.url), "utf8");
+  const manifest = JSON.parse(await readFile(new URL("../src/data/photography.generated.json", import.meta.url), "utf8"));
+  assert.equal(manifest.length, 82);
+  assert.deepEqual(Object.fromEntries(["City", "Nature", "Humanities"].map((series) => [series, manifest.filter((photo) => photo.series === series).length])), {
+    City: 44,
+    Nature: 12,
+    Humanities: 26,
+  });
+  assert.equal((html.match(/data-gallery-item(?=[\s>])/g) || []).length, manifest.length);
+  assert.match(html, /data-photo-category="city"/);
+  assert.match(html, /data-photo-category="nature"/);
+  assert.match(html, /data-photo-category="humanities"/);
+  assert.equal(all.filter((file) => file.endsWith(".webp") && path.relative(dist, file).startsWith("photos/")).length, manifest.reduce((total, photo) => total + photo.variants.length, 0));
+  assert.match(script, /event\.key === "ArrowLeft"/);
+  assert.match(script, /event\.key === "ArrowRight"/);
+  assert.match(html, /data-lightbox-prev/);
+  assert.match(html, /data-lightbox-next/);
 });
 
 test("photograph dimensions preserve rendered orientation and aspect ratio", async () => {
@@ -66,6 +81,8 @@ test("photograph dimensions preserve rendered orientation and aspect ratio", asy
   assert.match(styles, /\.photo-study img \{[^}]*height: auto;[^}]*object-fit: contain;/s);
   assert.match(styles, /\.gallery-demo-card img \{[^}]*height: auto;[^}]*object-fit: contain;/s);
   assert.doesNotMatch(styles, /\.photo-study img \{[^}]*object-fit: cover;/s);
+  assert.match(styles, /\.photo-category-grid \{[^}]*columns: 3 280px;/s);
+  assert.match(styles, /\.gallery-demo-card:hover img[^}]*transform: scale\(1\.045\)/s);
 });
 
 test("all internal HTML links resolve", async () => {

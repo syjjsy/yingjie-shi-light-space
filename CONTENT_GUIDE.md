@@ -13,7 +13,7 @@ For a work lacking a reliable DOI or author match, do not publish it. Record it 
 
 ## Import photography
 
-1. Put original photos in `图片/`. The entire directory is ignored by Git, so originals are never pushed to the repository.
+1. Put original photos in one of the three category folders: `图片/城市/`, `图片/自然/`, or `图片/人文/`. The entire `图片/` directory is ignored by Git, so originals are never pushed to the repository.
 2. Run `npm run photos:import`. JPG, PNG, TIFF, WebP, HEIC, and HEIF files are discovered automatically. HEIC/HEIF files are converted temporarily with `ffmpeg` before responsive WebP generation.
 3. The importer clears old generated `.webp` files, creates variants at up to 640, 1280, and 1920 pixels, and updates the manifest read by the home and photography pages.
 4. Inspect `public/photos/` and `src/data/photography.generated.json`, then run `npm test`.
@@ -23,7 +23,7 @@ Optional custom titles, alt text, series, dates, and captions can be added by fi
 
 ```json
 "overrides": {
-  "DSC00039.JPG": {
+  "城市/DSC00039.JPG": {
     "title": "Rain Window",
     "titleZh": "雨窗",
     "alt": "Rain on a window at dusk",
@@ -36,13 +36,14 @@ Optional custom titles, alt text, series, dates, and captions can be added by fi
 
 ### Replace a photograph
 
-1. Replace the file in `图片/` while keeping the same filename.
+1. Replace the file in its category folder while keeping the same filename.
 2. Run `npm run photos:import`, then `npm test`.
 
 ### Remove or reorder photographs
 
-- Remove a file from `图片/` and rerun the importer to remove its generated WebP files from the public output.
-- Files are displayed in natural filename order; the first three are used on the home page.
+- Remove a file from its category folder and rerun the importer to remove its generated WebP files from the public output.
+- Category order is configured in `src/data/photography.json`; files inside each category use natural filename order.
+- The first available photograph from City, Nature, and Humanities is used on the home page.
 - Never put original camera files directly in `public/photos/`; that directory is generated and cleaned by the importer.
 
 ## Blog status

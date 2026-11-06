@@ -6,13 +6,16 @@ import { researchStories } from "../data/research";
 import { photos } from "../data/photos";
 import { withBase } from "../utils/paths";
 
-const previewItems = photos.slice(0, 3).map((photo, index) => ({
+const previewItems = ["City", "Nature", "Humanities"]
+  .map((series) => photos.find((photo) => photo.series === series))
+  .filter((photo): photo is (typeof photos)[number] => Boolean(photo))
+  .map((photo, index) => ({
       src: photo.variants.at(-1)?.src ?? photo.variants[0]?.src ?? "",
       alt: photo.alt,
       width: photo.width,
       height: photo.height,
       label: `${String(index + 1).padStart(2, "0")} · ${photo.title}`,
-      badge: photo.series,
+      badge: photo.seriesZh || photo.series,
     }));
 ---
 

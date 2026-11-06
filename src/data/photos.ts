@@ -12,6 +12,7 @@ export interface PhotoRecord {
   titleZh?: string;
   alt: string;
   series: string;
+  seriesZh?: string;
   location?: string;
   date?: string;
   caption?: string;

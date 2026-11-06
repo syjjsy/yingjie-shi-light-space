@@ -83,16 +83,30 @@ function showLightbox(index) {
   image.src = item.dataset.full || item.querySelector("img")?.src || "";
   image.alt = item.dataset.alt || "";
   if (title) title.textContent = item.dataset.title || "";
-  lightbox.showModal();
+  if (!lightbox.open) lightbox.showModal();
 }
 
-galleryItems.forEach((item, index) => item.addEventListener("click", () => showLightbox(index)));
+galleryItems.forEach((item, index) => {
+  item.addEventListener("click", () => showLightbox(index));
+  item.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      showLightbox(index);
+    }
+  });
+});
 lightbox?.querySelector("[data-lightbox-close]")?.addEventListener("click", () => lightbox.close());
 lightbox?.querySelector("[data-lightbox-prev]")?.addEventListener("click", () => showLightbox(activeIndex - 1));
 lightbox?.querySelector("[data-lightbox-next]")?.addEventListener("click", () => showLightbox(activeIndex + 1));
 lightbox?.addEventListener("keydown", (event) => {
-  if (event.key === "ArrowLeft") showLightbox(activeIndex - 1);
-  if (event.key === "ArrowRight") showLightbox(activeIndex + 1);
+  if (event.key === "ArrowLeft") {
+    event.preventDefault();
+    showLightbox(activeIndex - 1);
+  }
+  if (event.key === "ArrowRight") {
+    event.preventDefault();
+    showLightbox(activeIndex + 1);
+  }
 });
 lightbox?.addEventListener("pointerdown", (event) => { pointerStart = event.clientX; });
 lightbox?.addEventListener("pointerup", (event) => {

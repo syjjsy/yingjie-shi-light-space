@@ -1,5 +1,9 @@
 {
   "sourceDirectory": "图片",
-  "series": "Photography",
+  "categories": [
+    { "directory": "城市", "slug": "city", "title": "City", "titleZh": "城市" },
+    { "directory": "自然", "slug": "nature", "title": "Nature", "titleZh": "自然" },
+    { "directory": "人文", "slug": "humanities", "title": "Humanities", "titleZh": "人文" }
+  ],
   "overrides": {}
 }

@@ -26,24 +26,52 @@ function slugFor(filename) {
     .toLowerCase();
 }
 
-const discoveredRecords = Array.isArray(config)
-  ? config
-  : (await readdir(inputDir, { withFileTypes: true }))
+async function discoverCategoryRecords() {
+  const records = [];
+  for (const category of config.categories ?? []) {
+    const categoryDir = path.join(inputDir, category.directory);
+    const filenames = (await readdir(categoryDir, { withFileTypes: true }))
       .filter((entry) => entry.isFile() && supportedExtensions.has(path.extname(entry.name).toLowerCase()))
       .map((entry) => entry.name)
-      .sort(naturalOrder.compare)
-      .map((source, index) => {
-        const number = String(index + 1).padStart(2, "0");
-        return {
-          source,
-          slug: slugFor(source),
-          title: `Untitled ${number}`,
-          titleZh: `无题 ${number}`,
-          alt: `Untitled photograph ${number} by Yingjie Shi`,
-          series: config.series ?? "Photography",
-          ...(config.overrides?.[source] ?? {}),
-        };
+      .sort(naturalOrder.compare);
+    filenames.forEach((filename, index) => {
+      const source = path.posix.join(category.directory, filename);
+      const number = String(index + 1).padStart(2, "0");
+      records.push({
+        source,
+        slug: `${category.slug}-${slugFor(filename)}`,
+        title: `Untitled ${number}`,
+        titleZh: `无题 ${number}`,
+        alt: `Untitled ${category.title.toLowerCase()} photograph ${number} by Yingjie Shi`,
+        series: category.title,
+        seriesZh: category.titleZh,
+        ...(config.overrides?.[source] ?? config.overrides?.[filename] ?? {}),
       });
+    });
+  }
+  return records;
+}
+
+const discoveredRecords = Array.isArray(config)
+  ? config
+  : config.categories?.length
+    ? await discoverCategoryRecords()
+    : (await readdir(inputDir, { withFileTypes: true }))
+        .filter((entry) => entry.isFile() && supportedExtensions.has(path.extname(entry.name).toLowerCase()))
+        .map((entry) => entry.name)
+        .sort(naturalOrder.compare)
+        .map((source, index) => {
+          const number = String(index + 1).padStart(2, "0");
+          return {
+            source,
+            slug: slugFor(source),
+            title: `Untitled ${number}`,
+            titleZh: `无题 ${number}`,
+            alt: `Untitled photograph ${number} by Yingjie Shi`,
+            series: config.series ?? "Photography",
+            ...(config.overrides?.[source] ?? {}),
+          };
+        });
 const records = discoveredRecords;
 const generated = [];
 const temporaryDir = await mkdtemp(path.join(tmpdir(), "yingjie-photo-import-"));
