@@ -27,6 +27,20 @@ test("build contains every required public route", async () => {
   }
 });
 
+test("enlarged identity typography is scoped to the home page", async () => {
+  const home = await readFile(new URL("index.html", distUrl), "utf8");
+  const research = await readFile(new URL("research/index.html", distUrl), "utf8");
+  const styles = await readFile(new URL("../src/styles/global.css", import.meta.url), "utf8");
+  assert.match(home, /<body class="home-page">/);
+  assert.doesNotMatch(research, /<body class="home-page">/);
+  assert.match(styles, /\.site-nav a, \.language-toggle \{[^}]*font-size: \.74rem;/s);
+  assert.match(styles, /\.hero-cn \{[^}]*font-size: \.84rem;/s);
+  assert.match(styles, /\.hero-meta \{[^}]*font-size: \.75rem;/s);
+  assert.match(styles, /\.home-page \.hero-cn \{ font-size: 1\.1rem; \}/);
+  assert.match(styles, /\.home-page \.hero-meta \{ font-size: 1rem; \}/);
+  assert.match(styles, /@media \(min-width: 981px\) \{\s*\.home-page \.site-nav a \{ font-size: 1rem; \}/s);
+});
+
 test("publication archive is complete and interactive", async () => {
   const html = await readFile(new URL("publications/index.html", distUrl), "utf8");
   assert.match(html, /10\.1063\/5\.0346094/i);
