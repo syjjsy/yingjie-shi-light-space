@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile, readdir, stat } from "node:fs/promises";
 import path from "node:path";
+import sharp from "sharp";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
@@ -52,6 +53,19 @@ test("photography archive contains every imported photograph", async () => {
   const html = await readFile(new URL("photography/index.html", distUrl), "utf8");
   assert.equal((html.match(/data-gallery-item(?=[\s>])/g) || []).length, 83);
   assert.equal(all.filter((file) => file.endsWith(".webp") && path.relative(dist, file).startsWith("photos/")).length, 246);
+});
+
+test("photograph dimensions preserve rendered orientation and aspect ratio", async () => {
+  const manifest = JSON.parse(await readFile(new URL("../src/data/photography.generated.json", import.meta.url), "utf8"));
+  const styles = await readFile(new URL("../src/styles/global.css", import.meta.url), "utf8");
+  for (const photo of manifest) {
+    const largest = photo.variants.at(-1);
+    const rendered = await sharp(fileURLToPath(new URL(`../public${largest.src}`, import.meta.url))).metadata();
+    assert.equal(photo.width * rendered.height, photo.height * rendered.width, `${photo.source} should keep its rendered aspect ratio`);
+  }
+  assert.match(styles, /\.photo-study img \{[^}]*height: auto;[^}]*object-fit: contain;/s);
+  assert.match(styles, /\.gallery-demo-card img \{[^}]*height: auto;[^}]*object-fit: contain;/s);
+  assert.doesNotMatch(styles, /\.photo-study img \{[^}]*object-fit: cover;/s);
 });
 
 test("all internal HTML links resolve", async () => {

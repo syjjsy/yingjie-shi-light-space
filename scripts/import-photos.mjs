@@ -74,20 +74,22 @@ try {
     const widths = [640, 1280, 1920].filter((width) => width <= (metadata.width ?? width));
     if (!widths.length && metadata.width) widths.push(metadata.width);
     const variants = [];
+    let renderedSize;
     for (const width of widths) {
       const filename = `${record.slug}-${width}.webp`;
       const destination = path.join(outputDir, filename);
-      await sharp(input)
+      const output = await sharp(input)
         .rotate()
         .resize({ width, withoutEnlargement: true })
         .webp({ quality: 84, effort: 5 })
         .toFile(destination);
+      renderedSize = { width: output.width, height: output.height };
       variants.push({ width, src: `/photos/${filename}` });
     }
     generated.push({
       ...record,
-      width: metadata.width,
-      height: metadata.height,
+      width: renderedSize?.width,
+      height: renderedSize?.height,
       variants,
     });
   }
