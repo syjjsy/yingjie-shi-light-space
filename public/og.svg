@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#eee9df"/>
+  <path d="M0 530C300 350 420 385 770 80M60 630C350 410 520 420 1120 40" stroke="#8e2e25" opacity=".42" fill="none"/>
+  <g fill="none" stroke="#1f211f" opacity=".16"><circle cx="770" cy="250" r="80"/><circle cx="770" cy="250" r="150"/><circle cx="770" cy="250" r="230"/></g>
+  <text x="72" y="128" fill="#8e2e25" font-family="Arial" font-size="20" letter-spacing="6">LIGHT / MEMORY / PERCEPTION</text>
+  <text x="64" y="420" fill="#1f211f" font-family="Georgia" font-size="132" letter-spacing="-7">Yingjie Shi</text>
+  <text x="73" y="482" fill="#686862" font-family="Arial" font-size="25" letter-spacing="9">师瑛杰 · COMPUTATIONAL IMAGING</text>
+</svg>

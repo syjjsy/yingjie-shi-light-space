@@ -1,0 +1,25 @@
+export const profile = {
+  name: "Yingjie Shi",
+  nameZh: "师瑛杰",
+  role: "Postdoctoral Researcher",
+  roleZh: "博士后研究人员",
+  institution: "Nanjing University of Science and Technology",
+  institutionZh: "南京理工大学",
+  statement: "Studying how light carries information beyond direct sight.",
+  statementZh: "研究光如何越过直接视线，仍然携带世界的信息。",
+  scholar: "https://scholar.google.com.hk/citations?user=aV-yImMAAAAJ&hl=zh-CN",
+  interests: [
+    "Computational Imaging",
+    "Non-Line-of-Sight Imaging",
+    "Imaging Through Scattering Media",
+    "Single-Photon Imaging",
+    "Optical Information Processing",
+  ],
+  interestsZh: [
+    "计算成像",
+    "非视域成像",
+    "散射介质成像",
+    "单光子成像",
+    "光学信息处理",
+  ],
+} as const;

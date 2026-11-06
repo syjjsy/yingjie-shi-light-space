@@ -1,0 +1,31 @@
+---
+import { withBase } from "../utils/paths";
+
+const path = Astro.url.pathname;
+const items = [
+  ["Research", "科研", "/research/"],
+  ["Publications", "论文", "/publications/"],
+  ["Photography", "摄影", "/photography/"],
+  ["About", "关于", "/about/"],
+];
+---
+
+<header class="site-header" data-header>
+  <a class="wordmark" href={withBase("/")} aria-label="Yingjie Shi — home">
+    <span class="wordmark-glyph" aria-hidden="true">YS</span>
+    <span class="wordmark-text">Yingjie Shi <small>师瑛杰</small></span>
+  </a>
+  <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-menu-toggle>
+    <span data-en>Menu</span><span data-zh>菜单</span><i aria-hidden="true"></i>
+  </button>
+  <nav id="site-nav" class="site-nav" aria-label="Primary navigation" data-menu>
+    {items.map(([en, zh, href]) => (
+      <a href={withBase(href)} aria-current={path.startsWith(withBase(href)) ? "page" : undefined}>
+        <span data-en>{en}</span><span data-zh>{zh}</span>
+      </a>
+    ))}
+    <button class="language-toggle" type="button" data-language-toggle aria-label="Switch language">
+      <span data-en>中文</span><span data-zh>EN</span>
+    </button>
+  </nav>
+</header>

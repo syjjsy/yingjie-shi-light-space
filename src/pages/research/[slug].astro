@@ -1,0 +1,29 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { researchStories } from "../../data/research";
+import { withBase } from "../../utils/paths";
+
+export function getStaticPaths() {
+  return researchStories.map((story) => ({ params: { slug: story.slug }, props: { story } }));
+}
+
+const { story } = Astro.props;
+---
+
+<BaseLayout title={`${story.title} — Yingjie Shi`} description={story.description} article>
+  <section class="story-detail-hero shell reveal">
+    <a class="back" href={withBase("/research/")}>← <span data-en>Research index</span><span data-zh>返回科研目录</span></a>
+    <p class="eyebrow">{story.year} · <span data-en>{story.kicker}</span><span data-zh>{story.kickerZh}</span></p>
+    <h1><span data-en>{story.title}</span><span data-zh>{story.titleZh}</span></h1>
+    <div class="story-deck">
+      <span class="research-index">DOI</span>
+      <p><span data-en>{story.description}</span><span data-zh>{story.descriptionZh}</span><br /><a class="text-link" href={`https://doi.org/${story.doi}`} rel="noreferrer">{story.doi}</a></p>
+    </div>
+  </section>
+  <section class="story-detail-content shell">
+    <span class="research-index">NOTE</span>
+    <article class="reveal"><h2><span data-en>Context</span><span data-zh>背景</span></h2><p><span data-en>{story.context}</span><span data-zh>{story.contextZh}</span></p></article>
+    <article class="reveal"><h2><span data-en>Method focus</span><span data-zh>方法焦点</span></h2><p><span data-en>{story.method}</span><span data-zh>{story.methodZh}</span></p></article>
+    <article class="reveal"><h2><span data-en>Research value</span><span data-zh>研究价值</span></h2><p><span data-en>{story.value}</span><span data-zh>{story.valueZh}</span></p></article>
+  </section>
+</BaseLayout>

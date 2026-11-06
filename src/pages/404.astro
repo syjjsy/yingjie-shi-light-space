@@ -1,0 +1,13 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { withBase } from "../utils/paths";
+---
+
+<BaseLayout title="404 — Light did not return" description="The requested page could not be found.">
+  <section class="not-found shell">
+    <span class="code">ERROR / 404</span>
+    <h1>Lost<br />light.</h1>
+    <p class="muted"><span data-en>This path returned no signal.</span><span data-zh>这条路径没有返回信号。</span></p>
+    <a class="text-link" href={withBase("/")}><span data-en>Return home</span><span data-zh>返回首页</span></a>
+  </section>
+</BaseLayout>

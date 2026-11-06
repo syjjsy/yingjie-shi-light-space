@@ -1,0 +1,33 @@
+<div class="optical-field" aria-hidden="true">
+  <svg viewBox="0 0 720 820" role="presentation">
+    <defs>
+      <radialGradient id="light-core">
+        <stop offset="0" stop-color="#fff8dc" stop-opacity=".98" />
+        <stop offset=".25" stop-color="#d8b977" stop-opacity=".58" />
+        <stop offset="1" stop-color="#8e2e25" stop-opacity="0" />
+      </radialGradient>
+      <filter id="soft"><feGaussianBlur stdDeviation="28" /></filter>
+    </defs>
+    <g class="field-rays">
+      <path d="M74 658 C226 508 308 430 604 96" />
+      <path d="M90 705 C248 526 357 448 668 164" />
+      <path d="M24 609 C208 502 322 392 561 52" />
+      <path d="M118 760 C266 568 402 502 696 254" />
+    </g>
+    <g class="field-echoes">
+      <circle cx="405" cy="387" r="76" />
+      <circle cx="405" cy="387" r="145" />
+      <circle cx="405" cy="387" r="226" />
+      <circle cx="405" cy="387" r="310" />
+    </g>
+    <circle class="field-glow" cx="405" cy="387" r="170" fill="url(#light-core)" filter="url(#soft)" />
+    <circle class="field-source" cx="405" cy="387" r="8" />
+    <path class="field-wall" d="M101 760 L101 158 L178 112" />
+    <path class="field-hidden" d="M565 191 L665 291 L665 615" />
+    <g class="field-points">
+      <circle cx="101" cy="658" r="3" /><circle cx="101" cy="609" r="3" />
+      <circle cx="604" cy="96" r="3" /><circle cx="668" cy="164" r="3" />
+    </g>
+  </svg>
+  <div class="field-caption"><span>τ</span><span>three-bounce light</span><span>Δt</span></div>
+</div>

@@ -1,0 +1,71 @@
+import assert from "node:assert/strict";
+import { readFile, readdir, stat } from "node:fs/promises";
+import path from "node:path";
+import test from "node:test";
+import { fileURLToPath } from "node:url";
+
+const distUrl = new URL("../dist/", import.meta.url);
+const dist = fileURLToPath(distUrl);
+const basePath = (process.env.BASE_PATH || "").replace(/\/$/, "");
+
+async function files(directory) {
+  const entries = await readdir(directory);
+  const results = [];
+  for (const entry of entries) {
+    const target = path.join(directory, entry);
+    if ((await stat(target)).isDirectory()) results.push(...await files(target));
+    else results.push(target);
+  }
+  return results;
+}
+
+test("build contains every required public route", async () => {
+  for (const route of ["index.html", "research/index.html", "publications/index.html", "photography/index.html", "about/index.html", "404.html", "sitemap.xml", "robots.txt"]) {
+    const content = await readFile(new URL(route, distUrl), "utf8");
+    assert.ok(content.length > 20, `${route} should not be empty`);
+  }
+});
+
+test("publication archive is complete and interactive", async () => {
+  const html = await readFile(new URL("publications/index.html", distUrl), "utf8");
+  assert.match(html, /10\.1063\/5\.0346094/i);
+  assert.match(html, /10\.1364\/OE\.575753/i);
+  assert.match(html, /data-publication-filters/);
+  assert.match(html, /data-copy-bibtex/);
+  assert.equal((html.match(/data-publication(?=[\s>])/g) || []).length, 29, "every publication should appear on the archive page");
+  assert.doesNotMatch(html, /href="[^"]*\/publications\/[^"#?]+\//, "publications must not generate individual detail pages");
+  assert.doesNotMatch(html, /candidate-only|Lorem ipsum/i);
+});
+
+test("blog and editorial placeholder notes are absent", async () => {
+  const all = await files(dist);
+  const html = (await Promise.all(all.filter((file) => file.endsWith(".html")).map((file) => readFile(file, "utf8")))).join("\n");
+  assert.ok(!all.some((file) => path.relative(dist, file).startsWith("journal/")));
+  assert.ok(!all.some((file) => path.relative(dist, file) === "rss.xml"));
+  assert.doesNotMatch(html, /href="[^"]*\/journal\/|application\/rss\+xml/i);
+  assert.doesNotMatch(html, /A blank page for the first note/);
+  assert.doesNotMatch(html, /No authored photographs have been imported yet|INTERFACE STUDY|Interface study|尚未提供的个人信息|暂不公开|有意保持不完整/i);
+});
+
+test("photography archive contains every imported photograph", async () => {
+  const all = await files(dist);
+  const html = await readFile(new URL("photography/index.html", distUrl), "utf8");
+  assert.equal((html.match(/data-gallery-item(?=[\s>])/g) || []).length, 83);
+  assert.equal(all.filter((file) => file.endsWith(".webp") && path.relative(dist, file).startsWith("photos/")).length, 246);
+});
+
+test("all internal HTML links resolve", async () => {
+  const all = await files(dist);
+  const htmlFiles = all.filter((file) => file.endsWith(".html"));
+  const available = new Set(all.map((file) => `/${path.relative(dist, file)}`));
+  for (const file of htmlFiles) {
+    const html = await readFile(file, "utf8");
+    for (const match of html.matchAll(/href="(\/[^"]*)"/g)) {
+      const href = match[1].split(/[?#]/)[0];
+      if (!href || href.startsWith("//")) continue;
+      const localHref = basePath && href.startsWith(`${basePath}/`) ? href.slice(basePath.length) : href;
+      const target = localHref.endsWith("/") ? `${localHref}index.html` : localHref;
+      assert.ok(available.has(target), `${path.basename(file)} links to missing ${target}`);
+    }
+  }
+});

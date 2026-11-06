@@ -1,0 +1,55 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageIntro from "../components/PageIntro.astro";
+import { publications, years, doiUrl, bibtexFor } from "../data/publications";
+
+function isYingjie(name: string) {
+  return /yingjie\s+shi|shi\s+yingjie/i.test(name);
+}
+---
+
+<BaseLayout title="Publications — Yingjie Shi" description="A filterable publication archive for Yingjie Shi, with DOI links and copyable BibTeX.">
+  <PageIntro index="02" title="Publications" titleZh="学术论文" description="Research in computational imaging, light transport, and optical reconstruction." descriptionZh="关于计算成像、光传输与光学重建的研究。" />
+  <div class="publication-toolbar">
+    <form class="shell" data-publication-filters>
+      <span class="filter-label"><span data-en>Filter archive</span><span data-zh>筛选档案</span></span>
+      <select name="year" aria-label="Filter by year">
+        <option value="all">All years / 全部年份</option>
+        {years.map((year) => <option value={String(year)}>{year}</option>)}
+      </select>
+      <select name="type" aria-label="Filter by publication type">
+        <option value="all">All types / 全部类型</option>
+        <option value="journal">Journal / 期刊</option>
+        <option value="conference">Conference / 会议</option>
+        <option value="preprint">Preprint / 预印本</option>
+      </select>
+      <span class="result-summary"><strong data-result-count>{publications.length}</strong> <span data-en>publications</span><span data-zh>篇论文</span></span>
+    </form>
+  </div>
+  <section class="publication-list shell" aria-label="Publication list">
+    {publications.map((item) => (
+      <article class="publication-item reveal" data-publication data-year={String(item.year)} data-type={item.type}>
+        <span class="publication-year">{item.year}</span>
+        <div class="publication-main">
+          <h2>{item.title}</h2>
+          <p class="publication-authors">
+            {item.authors.map((author, index) => (
+              <><span>{isYingjie(author) ? <strong>{author}</strong> : author}</span>{index < item.authors.length - 1 ? ", " : ""}</>
+            ))}
+          </p>
+          <p class="publication-venue"><em>{item.venue}</em>{item.volume ? ` ${item.volume}` : ""}{item.issue ? `(${item.issue})` : ""}{item.pages ? `, ${item.pages}` : ""}.</p>
+        </div>
+        <div class="publication-meta">
+          <span class="publication-type">{item.type}</span>
+          <div class="publication-actions">
+            <a href={doiUrl(item.doi)} rel="noreferrer" aria-label={`Open DOI for ${item.title}`}>DOI ↗</a>
+            <button type="button" data-copy-bibtex={bibtexFor(item)}>BibTeX</button>
+          </div>
+        </div>
+      </article>
+    ))}
+  </section>
+  <aside class="shell" style="padding-bottom:120px">
+    <a class="text-link" href="https://scholar.google.com.hk/citations?user=aV-yImMAAAAJ&hl=zh-CN" rel="noreferrer">Google Scholar</a>
+  </aside>
+</BaseLayout>

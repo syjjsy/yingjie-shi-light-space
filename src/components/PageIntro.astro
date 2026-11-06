@@ -1,0 +1,19 @@
+---
+interface Props {
+  index: string;
+  title: string;
+  titleZh: string;
+  description: string;
+  descriptionZh: string;
+}
+const { index, title, titleZh, description, descriptionZh } = Astro.props;
+---
+
+<section class="page-intro shell reveal">
+  <div class="page-index">{index} / 04</div>
+  <div>
+    <p class="eyebrow"><span data-en>Archive section</span><span data-zh>档案栏目</span></p>
+    <h1><span data-en>{title}</span><span data-zh>{titleZh}</span></h1>
+  </div>
+  <p class="page-description"><span data-en>{description}</span><span data-zh>{descriptionZh}</span></p>
+</section>

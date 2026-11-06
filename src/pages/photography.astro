@@ -1,0 +1,44 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageIntro from "../components/PageIntro.astro";
+import { photos } from "../data/photos";
+import { withBase } from "../utils/paths";
+
+---
+
+<BaseLayout title="Photography — Yingjie Shi" description="Photography by Yingjie Shi.">
+  <PageIntro index="03" title="Photography" titleZh="摄影" description="Light, space, and fragments of everyday life." descriptionZh="光线、空间与日常生活的片段。" />
+  <section class="demo-gallery shell" aria-label="Photography archive">
+    {photos.map((photo, index) => {
+      const full = photo.variants.at(-1)?.src ?? photo.variants[0]?.src ?? "";
+      const preview = photo.variants.find((variant) => variant.width >= 1280)?.src ?? full;
+      const title = photo.caption ? `${photo.title} — ${photo.caption}` : photo.title;
+      return (
+        <figure class="gallery-demo-card reveal" data-gallery-item data-full={withBase(full)} data-alt={photo.alt} data-title={title}>
+          <img
+            src={withBase(preview)}
+            srcset={photo.variants.map((variant) => `${withBase(variant.src)} ${variant.width}w`).join(", ")}
+            sizes="(max-width: 760px) 100vw, 68vw"
+            width={photo.width}
+            height={photo.height}
+            alt={photo.alt}
+            loading={index < 2 ? "eager" : "lazy"}
+          />
+          <figcaption>
+            <span>{String(index + 1).padStart(2, "0")} · <span data-en>{photo.title}</span><span data-zh>{photo.titleZh || photo.title}</span></span>
+            <span class="demo-badge">{photo.series}{photo.date ? ` · ${photo.date}` : ""}</span>
+          </figcaption>
+        </figure>
+      );
+    })}
+  </section>
+  <dialog class="lightbox" data-lightbox aria-label="Image viewer">
+    <div class="lightbox-inner">
+      <button class="lightbox-close" type="button" data-lightbox-close aria-label="Close">Close ×</button>
+      <button class="lightbox-prev" type="button" data-lightbox-prev aria-label="Previous image">←</button>
+      <img alt="" />
+      <button class="lightbox-next" type="button" data-lightbox-next aria-label="Next image">→</button>
+      <p class="lightbox-title" data-lightbox-title></p>
+    </div>
+  </dialog>
+</BaseLayout>
